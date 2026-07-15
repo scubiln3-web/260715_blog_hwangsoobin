@@ -51,7 +51,7 @@ export default function WritePost() {
             title, 
             content, 
             excerpt,
-            thumbnail_url: thumbnailUrl 
+            image_url: thumbnailUrl || "https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&q=80&w=1200"
           }
         ])
         .select()

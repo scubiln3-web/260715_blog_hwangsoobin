@@ -39,10 +39,10 @@ export default async function PostDetail({ params }: Props) {
         </p>
       </header>
 
-      {post.thumbnail_url && (
+      {post.image_url && (
         /* eslint-disable-next-line @next/next/no-img-element */
         <img 
-          src={post.thumbnail_url} 
+          src={post.image_url} 
           alt="Cover" 
           className={styles.coverImage} 
         />
