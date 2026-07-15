@@ -1,7 +1,29 @@
 import styles from "./page.module.css";
 import Link from "next/link";
+import { supabase } from "@/utils/supabase";
+import { notFound } from "next/navigation";
 
-export default function PostDetail({ params }: { params: { id: string } }) {
+export const dynamic = "force-dynamic";
+
+// Next.js params typing
+type Props = {
+  params: Promise<{ id: string }>;
+};
+
+export default async function PostDetail({ params }: Props) {
+  // Wait for the params promise to resolve
+  const { id } = await params;
+
+  const { data: post, error } = await supabase
+    .from('posts')
+    .select('*')
+    .eq('id', id)
+    .single();
+
+  if (error || !post) {
+    notFound();
+  }
+
   return (
     <article className="container" style={{ maxWidth: '900px' }}>
       <Link href="/" style={{ display: 'inline-block', marginBottom: '30px', color: 'var(--primary)', fontWeight: 500 }}>
@@ -9,21 +31,27 @@ export default function PostDetail({ params }: { params: { id: string } }) {
       </Link>
       
       <header className={styles.postHeader}>
-        <h1 className={styles.title}>Building a Modern Blog with Next.js</h1>
-        <p className={styles.date}>July 15, 2026</p>
+        <h1 className={styles.title}>{post.title}</h1>
+        <p className={styles.date}>
+          {new Date(post.created_at).toLocaleDateString('en-US', {
+            year: 'numeric', month: 'long', day: 'numeric'
+          })}
+        </p>
       </header>
 
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img 
-        src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&q=80&w=1200" 
-        alt="Cover" 
-        className={styles.coverImage} 
-      />
+      {post.thumbnail_url && (
+        /* eslint-disable-next-line @next/next/no-img-element */
+        <img 
+          src={post.thumbnail_url} 
+          alt="Cover" 
+          className={styles.coverImage} 
+        />
+      )}
 
       <div className={styles.content}>
-        <p>This is a mock blog post content. In a real application, this content would be fetched from Supabase based on the post ID.</p>
-        <p>When creating a modern web application, typography and spacing are crucial. The goal is to create a reading experience that is both beautiful and highly readable.</p>
-        <p>Next.js App Router provides excellent tools for building SEO-friendly, fast-loading web applications with React Server Components.</p>
+        {post.content.split('\n').map((paragraph: string, idx: number) => (
+          paragraph.trim() ? <p key={idx}>{paragraph}</p> : <br key={idx} />
+        ))}
       </div>
     </article>
   );

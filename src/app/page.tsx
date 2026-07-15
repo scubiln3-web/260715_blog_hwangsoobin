@@ -1,32 +1,19 @@
 import Link from "next/link";
+import { supabase } from "@/utils/supabase";
 import styles from "./page.module.css";
 
-// Temporary mock data until Supabase is connected
-const mockPosts = [
-  {
-    id: "1",
-    title: "Building a Modern Blog with Next.js",
-    excerpt: "Learn how to build a beautiful and fast blog using Next.js App Router and Supabase.",
-    date: "July 15, 2026",
-    thumbnail: "https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&q=80&w=800"
-  },
-  {
-    id: "2",
-    title: "The Power of Vanilla CSS",
-    excerpt: "Why returning to the basics of CSS might be the best choice for your next project's design system.",
-    date: "July 14, 2026",
-    thumbnail: "https://images.unsplash.com/photo-1507721999472-8ed4421c4af2?auto=format&fit=crop&q=80&w=800"
-  },
-  {
-    id: "3",
-    title: "Glassmorphism UI Trends",
-    excerpt: "Exploring the frosted glass effect in modern web interfaces and how to implement it.",
-    date: "July 10, 2026",
-    thumbnail: "https://images.unsplash.com/photo-1558655146-d09347e92766?auto=format&fit=crop&q=80&w=800"
-  }
-];
+export const dynamic = "force-dynamic";
 
-export default function Home() {
+export default async function Home() {
+  const { data: posts, error } = await supabase
+    .from('posts')
+    .select('*')
+    .order('created_at', { ascending: false });
+
+  if (error) {
+    console.error("Error fetching posts:", error);
+  }
+
   return (
     <div className="container">
       <section className={styles.hero}>
@@ -35,22 +22,37 @@ export default function Home() {
       </section>
 
       <section className={styles.postGrid}>
-        {mockPosts.map((post) => (
+        {posts?.map((post) => (
           <Link href={`/post/${post.id}`} key={post.id} className={styles.postCard}>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img 
-              src={post.thumbnail} 
-              alt={post.title} 
-              className={styles.thumbnail}
-              loading="lazy"
-            />
+            {post.thumbnail_url ? (
+              /* eslint-disable-next-line @next/next/no-img-element */
+              <img 
+                src={post.thumbnail_url} 
+                alt={post.title} 
+                className={styles.thumbnail}
+                loading="lazy"
+              />
+            ) : (
+              <div className={styles.thumbnail} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--text-muted)' }}>
+                No Image
+              </div>
+            )}
             <div className={styles.postContent}>
-              <span className={styles.postDate}>{post.date}</span>
+              <span className={styles.postDate}>
+                {new Date(post.created_at).toLocaleDateString('en-US', {
+                  year: 'numeric', month: 'long', day: 'numeric'
+                })}
+              </span>
               <h2 className={styles.postTitle}>{post.title}</h2>
               <p className={styles.postExcerpt}>{post.excerpt}</p>
             </div>
           </Link>
         ))}
+        {(!posts || posts.length === 0) && (
+          <p style={{ gridColumn: '1 / -1', textAlign: 'center', color: 'var(--text-muted)', marginTop: '40px' }}>
+            No posts yet. Click "Write Post" to create one!
+          </p>
+        )}
       </section>
     </div>
   );
