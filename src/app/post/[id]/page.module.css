@@ -1,37 +1,48 @@
+.articleContainer {
+  padding: 60px;
+  border-radius: var(--radius-lg);
+  margin-bottom: 80px;
+  margin-top: 40px;
+}
+
 .postHeader {
-  margin-bottom: 40px;
+  margin-bottom: 50px;
   text-align: center;
 }
 
 .title {
-  font-size: 2.5rem;
+  font-size: 3rem;
   font-weight: 800;
-  letter-spacing: -0.02em;
-  margin-bottom: 12px;
+  letter-spacing: -0.03em;
+  margin-bottom: 16px;
+  line-height: 1.2;
 }
 
 .date {
-  color: var(--text-muted);
+  color: var(--primary);
   font-size: 1rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
 }
 
 .coverImage {
   width: 100%;
-  height: 400px;
+  height: 500px;
   object-fit: cover;
-  border-radius: var(--radius-lg);
-  margin-bottom: 40px;
+  border-radius: var(--radius-md);
+  margin-bottom: 50px;
   box-shadow: var(--shadow-md);
 }
 
 .content {
-  font-size: 1.1rem;
+  font-size: 1.15rem;
   line-height: 1.8;
   color: var(--foreground);
-  max-width: 800px;
+  max-width: 700px;
   margin: 0 auto;
 }
 
 .content p {
-  margin-bottom: 20px;
+  margin-bottom: 24px;
 }

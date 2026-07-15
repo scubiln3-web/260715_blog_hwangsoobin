@@ -1,21 +1,29 @@
-.header {
+.headerWrapper {
+  padding: 20px 0;
   position: sticky;
   top: 0;
   z-index: 100;
-  width: 100%;
+}
+
+.header {
+  border-radius: 100px;
+  padding: 0 24px;
+  max-width: 800px;
+  margin: 0 auto;
+  transition: box-shadow var(--transition-smooth), transform var(--transition-smooth);
 }
 
 .headerContent {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  height: 70px;
+  height: 60px;
 }
 
 .logo {
-  font-size: 1.5rem;
-  font-weight: 700;
-  letter-spacing: -0.02em;
+  font-size: 1.25rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
   color: var(--foreground);
 }
 
@@ -26,15 +34,16 @@
 }
 
 .writeBtn {
-  background-color: var(--primary);
-  color: white;
-  padding: 8px 16px;
-  border-radius: var(--radius-sm);
-  font-weight: 500;
+  background-color: var(--foreground);
+  color: var(--background);
+  padding: 8px 20px;
+  border-radius: 100px;
+  font-weight: 600;
   font-size: 0.9rem;
 }
 
 .writeBtn:hover {
-  background-color: var(--primary-hover);
-  transform: translateY(-1px);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+  opacity: 0.9;
 }

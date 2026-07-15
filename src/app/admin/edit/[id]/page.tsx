@@ -86,7 +86,7 @@ export default function EditPost() {
 
   return (
     <div className="container">
-      <div className={styles.writeContainer}>
+      <div className={`${styles.writeContainer} glass`}>
         <form onSubmit={handleSubmit}>
           <div className={styles.header}>
             <h1 className={styles.title}>Edit Post</h1>

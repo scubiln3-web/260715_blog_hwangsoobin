@@ -23,7 +23,7 @@ export default async function Home() {
 
       <section className={styles.postGrid}>
         {posts?.map((post) => (
-          <Link href={`/post/${post.id}`} key={post.id} className={styles.postCard}>
+          <Link href={`/post/${post.id}`} key={post.id} className={`${styles.postCard} glass`}>
             {post.image_url ? (
               /* eslint-disable-next-line @next/next/no-img-element */
               <img 
