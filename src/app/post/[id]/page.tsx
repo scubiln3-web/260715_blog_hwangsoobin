@@ -2,16 +2,15 @@ import styles from "./page.module.css";
 import Link from "next/link";
 import { supabase } from "@/utils/supabase";
 import { notFound } from "next/navigation";
+import PostActions from "@/components/PostActions";
 
 export const dynamic = "force-dynamic";
 
-// Next.js params typing
 type Props = {
   params: Promise<{ id: string }>;
 };
 
 export default async function PostDetail({ params }: Props) {
-  // Wait for the params promise to resolve
   const { id } = await params;
 
   const { data: post, error } = await supabase
@@ -26,9 +25,12 @@ export default async function PostDetail({ params }: Props) {
 
   return (
     <article className="container" style={{ maxWidth: '900px' }}>
-      <Link href="/" style={{ display: 'inline-block', marginBottom: '30px', color: 'var(--primary)', fontWeight: 500 }}>
-        &larr; Back to Home
-      </Link>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '30px' }}>
+        <Link href="/" style={{ color: 'var(--primary)', fontWeight: 500 }}>
+          &larr; Back to Home
+        </Link>
+        <PostActions postId={post.id} />
+      </div>
       
       <header className={styles.postHeader}>
         <h1 className={styles.title}>{post.title}</h1>
